@@ -467,6 +467,21 @@ appAngular.controller('youtubeInfoController', function($scope, $http, $sce) {
     $scope.reloadPage();
   }
 
+  $scope.deleteItem = function (itemId, listNumber) {
+    switch (listNumber) {
+        case 1:
+            $scope.infoListSortedOne = $scope.infoListSortedOne.filter(function(item) { return (item.objectId != itemId); });
+            break;
+        case 2:
+            $scope.infoListSortedTwo = $scope.infoListSortedTwo.filter(function(item) { return (item.objectId != itemId); });
+            break;
+        default:
+            console.error("Неизвестное значение переменной listNumber в методе deleteItem: ", listNumber);
+    }
+
+    $scope.reloadPage();
+  }
+
   $scope.setMassive();
   $scope.reloadPage();
 });

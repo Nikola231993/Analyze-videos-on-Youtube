@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Английский язык уроки</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+
+<body class="bodyBackground" ng-app="myTestApplication">
+  <div ng-controller="youtubeInfoController" align="center">
+    <h2>Видео по запросу: Английский язык уроки</h2>
+    <div class="content blockAliceBlue">
+      <h4>Общая информация по списку отсортированному {{localTextListOne}}</h4>
+      <label class="boldTextForStatistics">Количество видео: </label> {{getCountVideo(1)}}<br>
+      <label class="boldTextForStatistics">Общая продолжительность: </label> {{getInfoForStatistic("Summ", 1, "Duration")}}<br>
+      <label class="boldTextForStatistics">Всего просмотров: </label> {{getInfoForStatistic("Summ", 1, "ViewsCount")}}<br>
+      <label class="boldTextForStatistics">Всего комментариев: </label> {{getInfoForStatistic("Summ", 1, "CommentCount")}}<br>
+      <label class="boldTextForStatistics">Всего лайков: </label> {{getInfoForStatistic("Summ", 1, "LikeCount")}}<br>
+      <label class="boldTextForStatistics">Всего дизлайков: </label> {{getInfoForStatistic("Summ", 1, "DizLikeCount")}}<br>
+      <label class="boldTextForStatistics">Средняя продолжительность: </label> {{getInfoForStatistic("Avg", 1, "Duration")}}<br>
+      <label class="boldTextForStatistics">В среднем просмотров: </label> {{getInfoForStatistic("Avg", 1, "ViewsCount")}}<br>
+      <label class="boldTextForStatistics">В среднем комментариев: </label> {{getInfoForStatistic("Avg", 1, "CommentCount")}}<br>
+      <label class="boldTextForStatistics">В среднем лайков: </label> {{getInfoForStatistic("Avg", 1, "LikeCount")}}<br>
+      <label class="boldTextForStatistics">В среднем дизлайков: </label> {{getInfoForStatistic("Avg", 1, "DizLikeCount")}}<br>
+      <br><br><br>
+      <h4>Общая информация по списку отсортированному {{localTextListTwo}}</h4>
+      <label class="boldTextForStatistics">Количество видео: </label> {{getCountVideo(2)}}<br>
+      <label class="boldTextForStatistics">Общая продолжительность: </label> {{getInfoForStatistic("Summ", 2, "Duration")}}<br>
+      <label class="boldTextForStatistics">Всего просмотров: </label> {{getInfoForStatistic("Summ", 2, "ViewsCount")}}<br>
+      <label class="boldTextForStatistics">Всего комментариев: </label> {{getInfoForStatistic("Summ", 2, "CommentCount")}}<br>
+      <label class="boldTextForStatistics">Всего лайков: </label> {{getInfoForStatistic("Summ", 2, "LikeCount")}}<br>
+      <label class="boldTextForStatistics">Всего дизлайков: </label> {{getInfoForStatistic("Summ", 2, "DizLikeCount")}}<br>
+      <label class="boldTextForStatistics">В среднем просмотров: </label> {{getInfoForStatistic("Avg", 2, "ViewsCount")}}<br>
+      <label class="boldTextForStatistics">Средняя продолжительность: </label> {{getInfoForStatistic("Avg", 2, "Duration")}}<br>
+      <label class="boldTextForStatistics">В среднем комментариев: </label> {{getInfoForStatistic("Avg", 2, "CommentCount")}}<br>
+      <label class="boldTextForStatistics">В среднем лайков: </label> {{getInfoForStatistic("Avg", 2, "LikeCount")}}<br>
+      <label class="boldTextForStatistics">В среднем дизлайков: </label> {{getInfoForStatistic("Avg", 2, "DizLikeCount")}}<br>
+    </div>
+
+    <div class="row" align="center">
+      <div class="col-xs-6 col-sm-6 col-md-6" align="center">
+        <br><br>
+        <h3>Отсортировано {{localTextListOne}}</h3>
+        <div>
+          <button class="purpleButton" align="right" ng-click="reverseSortMassive(1)">{{textSortMassiveOne}}</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('DatePublished', 1)">Дата публикации</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('CommentCount', 1)">Кол-во комментов</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('Duration', 1)">Продолжительность</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('ViewsCount', 1)">Кол-во просмотров</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('LikeCount', 1)">Кол-во лайков</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('DizLikeCount', 1)">Кол-во дизлайков</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('ObjectId', 1)">Релевантность</button>
+        </div>
+        <div class="content blockAliceBlue" ng-repeat="infoVideo in showinfoListSortedOne">
+          <h3>{{infoVideo.videoName}}</h3>
+          <iframe align="center" width="100%" height="200px" ng-src="{{trustSrc(infoVideo.urlVideo)}}" frameborder="15" allowfullscreen></iframe>
+          <label class="boldTextForStatistics">Дата публикации: </label> {{infoVideo.datePublished}}<br>
+          <label class="boldTextForStatistics">Продолжительность: </label> {{infoVideo.duration}}<br>
+          <label class="boldTextForStatistics">Продолжительность в секундах: </label> {{infoVideo.totalSeconds}}<br>
+          <label class="boldTextForStatistics">Количество просмотров: </label> {{infoVideo.viewsCount}}<br>
+          <label class="boldTextForStatistics">Количество комментов: </label> {{infoVideo.commentCount}}<br>
+          <label class="boldTextForStatistics">Количество лайков: </label> {{infoVideo.likeCount}}<br>
+          <label class="boldTextForStatistics">Количество дизлайков: </label> {{infoVideo.dizLikeCount}}<br>
+          <label class="boldTextForStatistics">Описание: </label> {{infoVideo.videoDescript}}<br>
+          <br><button align="right" ng-click="deleteItem(infoVideo.objectId, 'DatePublished')">Удалить</button>
+        </div>
+        <div class="content blockAliceBlue">
+          <h3>Текстовое представление {{localTextListOne}}</h3>
+          <textarea align="center" ng-model="textOutByListOne"></textarea>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-6 col-md-6" align="center">
+        <br><br>
+        <h3>Отсортировано {{localTextListTwo}}</h3>
+        <div class="content">
+          <button class="purpleButton" align="right" ng-click="reverseSortMassive(2)">{{textSortMassiveTwo}}</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('DatePublished', 2)">Дата публикации</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('CommentCount', 2)">Кол-во комментов</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('Duration', 2)">Продолжительность</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('ViewsCount', 2)">Кол-во просмотров</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('LikeCount', 2)">Кол-во лайков</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('DizLikeCount', 2)">Кол-во дизлайков</button>
+          <button class="greenButton" align="right" ng-click="setSortMassive('ObjectId', 2)">Релевантность</button>
+        </div>
+        <div class="content blockAliceBlue" ng-repeat="infoVideo in showinfoListSortedTwo">
+          <h3>{{infoVideo.videoName}}</h3>
+          <iframe align="center" width="100%" height="200px" ng-src="{{trustSrc(infoVideo.urlVideo)}}" frameborder="15" allowfullscreen></iframe>
+          <label class="boldTextForStatistics">Дата публикации: </label> {{infoVideo.datePublished}}<br>
+          <label class="boldTextForStatistics">Продолжительность: </label> {{infoVideo.duration}}<br>
+          <label class="boldTextForStatistics">Продолжительность в секундах: </label> {{infoVideo.totalSeconds}}<br>
+          <label class="boldTextForStatistics">Количество просмотров: </label> {{infoVideo.viewsCount}}<br>
+          <label class="boldTextForStatistics">Количество комментов: </label> {{infoVideo.commentCount}}<br>
+          <label class="boldTextForStatistics">Количество лайков: </label> {{infoVideo.likeCount}}<br>
+          <label class="boldTextForStatistics">Количество дизлайков: </label> {{infoVideo.dizLikeCount}}<br>
+          <label class="boldTextForStatistics">Описание: </label> {{infoVideo.videoDescript}}<br>
+          <br><button align="right" ng-click="deleteItem(infoVideo.objectId, 'CommentCount')">Удалить</button>
+        </div>
+        <div class="content blockAliceBlue">
+          <h3>Текстовое представление {{localTextListTwo}}</h3>
+          <textarea align="center" ng-model="textOutByListTwo"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="content blockAliceBlue">
+      <h3 align="center">Страница {{selectedPage}} из {{getCountPage(1)}}</h3>
+      <form align="center">
+        <input placeholder="Введите № страницы" type="text" ng-model="inputSelectedPage">
+        <button align="left" ng-click="toPage(inputSelectedPage)">Перейти на страницу</button>
+      </form>
+      <div class="row" align="center">
+        <div class="col-xs-6 col-sm-6 col-md-6" align="center">
+          <br><br>
+          <button align="left" ng-click="toPage('Previous')">На предыдущую страницу</button>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6" align="center">
+          <br><br>
+          <button align="right" ng-click="toPage('Next')">На следущую страницу</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+  <script src="info_4.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>

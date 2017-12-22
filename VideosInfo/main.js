@@ -142,58 +142,70 @@ appAngular.controller('youtubeInfoController', function($scope, $http, $sce) {
     return outText;
   }
 
+  $scope.sortDate = function(a, b, isRevert) {
+    var datePartsA = a.split(".");
+    var datePartsB = b.split(".");
+    var replace = false;
+
+    a = datePartsA[1] + "." + datePartsA[0] + "." + datePartsA[2];
+    b = datePartsB[1] + "." + datePartsB[0] + "." + datePartsB[2];
+
+    if ((isRevert && Date.parse(b) > Date.parse(a)) ||
+      (!isRevert && Date.parse(a) > Date.parse(b)))
+      replace = true;
+
+    return replace;
+  };
+
   $scope.sortMassive = function(inputMass, bySort, reverse) {
     var lenghtSpisok = inputMass.length;
     var replace = false;
 
-    if (bySort == "DatePublished") {
-      inputMass = $scope.cloneMassive(videoInfoListSortedByDatePublished);
-      if (reverse)
-        inputMass = inputMass.reverse();
-    } else {
-      for (var i = 0; i < lenghtSpisok; i++) {
-        for (var j = i; j < lenghtSpisok; j++) {
-          switch (bySort) {
-            case "Duration":
-              if ((inputMass[i].totalSeconds > inputMass[j].totalSeconds && !reverse) ||
-                (inputMass[i].totalSeconds < inputMass[j].totalSeconds && reverse))
-                replace = true;
-              break;
-            case "CommentCount":
-              if ((inputMass[i].commentCount > inputMass[j].commentCount && !reverse) ||
-                (inputMass[i].commentCount < inputMass[j].commentCount && reverse))
-                replace = true;
-              break;
-            case "ViewsCount":
-              if ((inputMass[i].viewsCount > inputMass[j].viewsCount && !reverse) ||
-                (inputMass[i].viewsCount < inputMass[j].viewsCount && reverse))
-                replace = true;
-              break;
-            case "LikeCount":
-              if ((inputMass[i].likeCount > inputMass[j].likeCount && !reverse) ||
-                (inputMass[i].likeCount < inputMass[j].likeCount && reverse))
-                replace = true;
-              break;
-            case "DizLikeCount":
-              if ((inputMass[i].dizLikeCount > inputMass[j].dizLikeCount && !reverse) ||
-                (inputMass[i].dizLikeCount < inputMass[j].dizLikeCount && reverse))
-                replace = true;
-              break;
-            case "ObjectId":
-              if ((inputMass[i].objectId > inputMass[j].objectId && !reverse) ||
-                (inputMass[i].objectId < inputMass[j].objectId && reverse))
-                replace = true;
-              break;
-            default:
-              console.error("Неизвестное значение переменной bySort в методе sortMassive: ", bySort);
-          }
+    for (var i = 0; i < lenghtSpisok; i++) {
+      for (var j = i; j < lenghtSpisok; j++) {
+        switch (bySort) {
+          case "DatePublished":
+            replace = $scope.sortDate(inputMass[i].origDate, inputMass[j].origDate, reverse);
+            break;
+          case "Duration":
+            if ((inputMass[i].totalSeconds > inputMass[j].totalSeconds && !reverse) ||
+              (inputMass[i].totalSeconds < inputMass[j].totalSeconds && reverse))
+              replace = true;
+            break;
+          case "CommentCount":
+            if ((inputMass[i].commentCount > inputMass[j].commentCount && !reverse) ||
+              (inputMass[i].commentCount < inputMass[j].commentCount && reverse))
+              replace = true;
+            break;
+          case "ViewsCount":
+            if ((inputMass[i].viewsCount > inputMass[j].viewsCount && !reverse) ||
+              (inputMass[i].viewsCount < inputMass[j].viewsCount && reverse))
+              replace = true;
+            break;
+          case "LikeCount":
+            if ((inputMass[i].likeCount > inputMass[j].likeCount && !reverse) ||
+              (inputMass[i].likeCount < inputMass[j].likeCount && reverse))
+              replace = true;
+            break;
+          case "DizLikeCount":
+            if ((inputMass[i].dizLikeCount > inputMass[j].dizLikeCount && !reverse) ||
+              (inputMass[i].dizLikeCount < inputMass[j].dizLikeCount && reverse))
+              replace = true;
+            break;
+          case "ObjectId":
+            if ((inputMass[i].objectId > inputMass[j].objectId && !reverse) ||
+              (inputMass[i].objectId < inputMass[j].objectId && reverse))
+              replace = true;
+            break;
+          default:
+            console.error("Неизвестное значение переменной bySort в методе sortMassive: ", bySort);
+        }
 
-          if (replace) {
-            var stepElem = inputMass[i];
-            inputMass[i] = inputMass[j];
-            inputMass[j] = stepElem;
-            replace = false;
-          }
+        if (replace) {
+          var stepElem = inputMass[i];
+          inputMass[i] = inputMass[j];
+          inputMass[j] = stepElem;
+          replace = false;
         }
       }
     }
@@ -212,9 +224,6 @@ appAngular.controller('youtubeInfoController', function($scope, $http, $sce) {
   }
 
   $scope.setMassive = function() {
-    $scope.infoListSortedOne = $scope.cloneMassive(videoInfoListSortedByDatePublished);
-    $scope.infoListSortedTwo = $scope.cloneMassive(videoInfoListSortedByDatePublished);
-
     var locatedText = ["по длительности", "по количеству комментов", "по количеству просмотров", "по количеству лайков",
       "по количеству дизлайков", "по релевантности", "по дате публикации"
     ];
@@ -442,7 +451,7 @@ appAngular.controller('youtubeInfoController', function($scope, $http, $sce) {
         {
           var pageNumber = Number(goText);
 
-          if (pageNumber > 0 && pageNumber <= maxCount )
+          if (pageNumber > 0 && pageNumber <= maxCount)
             $scope.selectedPage = pageNumber;
         }
     }
@@ -467,21 +476,27 @@ appAngular.controller('youtubeInfoController', function($scope, $http, $sce) {
     $scope.reloadPage();
   }
 
-  $scope.deleteItem = function (itemId, listNumber) {
+  $scope.deleteItem = function(itemId, listNumber) {
     switch (listNumber) {
-        case 1:
-            $scope.infoListSortedOne = $scope.infoListSortedOne.filter(function(item) { return (item.objectId != itemId); });
-            break;
-        case 2:
-            $scope.infoListSortedTwo = $scope.infoListSortedTwo.filter(function(item) { return (item.objectId != itemId); });
-            break;
-        default:
-            console.error("Неизвестное значение переменной listNumber в методе deleteItem: ", listNumber);
+      case 1:
+        $scope.infoListSortedOne = $scope.infoListSortedOne.filter(function(item) {
+          return (item.objectId != itemId);
+        });
+        break;
+      case 2:
+        $scope.infoListSortedTwo = $scope.infoListSortedTwo.filter(function(item) {
+          return (item.objectId != itemId);
+        });
+        break;
+      default:
+        console.error("Неизвестное значение переменной listNumber в методе deleteItem: ", listNumber);
     }
 
     $scope.reloadPage();
   }
 
+  $scope.infoListSortedOne = $scope.cloneMassive(videoInfoListSortedByDatePublished);
+  $scope.infoListSortedTwo = $scope.cloneMassive(videoInfoListSortedByDatePublished);
   $scope.setMassive();
   $scope.reloadPage();
 });
